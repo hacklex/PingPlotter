@@ -1,6 +1,6 @@
 # PingPlotter
 
-A simple tool to track your ping to any desired host.
+A simple tool to watch your ping history to any desired host.
 
 You can also export the log to a CSV file.
 
