@@ -1,0 +1,47 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:PingPlotter.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:scottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        x:Class="PingPlotter.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Ping Plotter">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto" Margin="10">
+            <TextBlock Grid.Column="0" Text="Host:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox VerticalAlignment="Center" Grid.Column="1" Text="{Binding HostName}" 
+                     Watermark="Enter hostname or IP" Margin="0,0,10,0"/>
+            <Button Grid.Column="2" Content="Start" Command="{Binding StartPingingCommand}" 
+                    IsEnabled="{Binding !IsPinging}" Margin="0,0,5,0"/>
+            <Button Grid.Column="3" Content="Stop" Command="{Binding StopPingingCommand}" 
+                    IsEnabled="{Binding IsPinging}" Margin="0,0,5,0"/>
+            <Button Grid.Column="4" Content="Save Log" Command="{Binding SaveLogCommand}"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <scottPlot:AvaPlot Name="PingPlot" />
+        </Grid>
+
+        <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="10">
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="15">
+                <TextBlock FontSize="10" Text="{Binding StatusMessage}" VerticalAlignment="Center"/>
+                <TextBlock FontSize="10" Text="{Binding MinResponseTime, StringFormat='Min: {0:F1} ms'}" VerticalAlignment="Center"/>
+                <TextBlock FontSize="10" Text="{Binding MaxResponseTime, StringFormat='Max: {0:F1} ms'}" VerticalAlignment="Center"/>
+                <TextBlock FontSize="10" Text="{Binding AvgResponseTime, StringFormat='Avg: {0:F1} ms'}" VerticalAlignment="Center"/>
+                <TextBlock FontSize="10" Text="{Binding PacketLoss, StringFormat='Packet Loss: {0}%'}" VerticalAlignment="Center"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="5">
+                <CheckBox IsChecked="True" x:Name="AutoScaleCheckBox">AutoScale</CheckBox>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
